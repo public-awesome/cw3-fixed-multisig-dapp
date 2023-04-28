@@ -34,5 +34,5 @@ export const zeroVotingCoin = {
 
 export const zeroStakingCoin = {
   amount: '0',
-  denom: process.env.NEXT_PUBLIC_STAKING_DENOM || 'ujuno',
+  denom: process.env.NEXT_PUBLIC_STAKING_DENOM || 'ustars',
 }

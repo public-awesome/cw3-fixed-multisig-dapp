@@ -7,9 +7,12 @@ import { useRouter } from 'next/router'
 import LineAlert from 'components/LineAlert'
 import { InstantiateResult } from '@cosmjs/cosmwasm-stargate'
 import { InstantiateMsg, Voter } from 'types/cw3'
+import { StdFee } from "@cosmjs/stargate";
+
+const defaultFee: StdFee = { amount: [{ amount: "10000", denom: "ustars" },], gas: "500000" };
 
 const MULTISIG_CODE_ID =
-  parseInt(process.env.NEXT_MULTISIG_CODE_ID as string) || 49
+  parseInt(process.env.NEXT_MULTISIG_CODE_ID as string) || 2081
 
 function AddressRow({ idx, readOnly }: { idx: number; readOnly: boolean }) {
   return (
@@ -40,8 +43,8 @@ function AddressRow({ idx, readOnly }: { idx: number; readOnly: boolean }) {
 }
 
 function validateNonEmpty(msg: InstantiateMsg, label: string) {
-  const { required_weight, max_voting_period, voters } = msg
-  if (isNaN(required_weight) || isNaN(max_voting_period.time)) {
+  const { threshold, max_voting_period, voters } = msg
+  if (isNaN(threshold.absolute_count.weight) || isNaN(max_voting_period.time)) {
     return false
   }
   if (label.length === 0) {
@@ -92,7 +95,7 @@ const CreateMultisig: NextPage = () => {
 
     const msg = {
       voters,
-      required_weight,
+      threshold: {absolute_count:{weight: required_weight}},
       max_voting_period,
     }
 
@@ -112,7 +115,7 @@ const CreateMultisig: NextPage = () => {
     }
 
     signingClient
-      .instantiate(walletAddress, MULTISIG_CODE_ID, msg, label)
+      .instantiate(walletAddress, MULTISIG_CODE_ID, msg, label, defaultFee)
       .then((response: InstantiateResult) => {
         setLoading(false)
         if (response.contractAddress.length > 0) {

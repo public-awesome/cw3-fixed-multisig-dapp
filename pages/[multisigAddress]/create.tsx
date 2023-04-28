@@ -5,6 +5,9 @@ import { useState, FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import LineAlert from 'components/LineAlert'
 import cloneDeep from 'lodash.clonedeep'
+import { StdFee } from "@cosmjs/stargate";
+
+const defaultFee: StdFee = { amount: [{ amount: "10000", denom: "ustars" },], gas: "500000" };
 
 interface FormElements extends HTMLFormControlsCollection {
   label: HTMLInputElement
@@ -21,17 +24,6 @@ function validateJsonSendMsg(json: any, multisigAddress: string) {
     return false
   }
   if (Array.isArray(json)) {
-    return false
-  }
-  const messages = json?.body?.messages || []
-  if (messages.length !== 1) {
-    return false
-  }
-  const [message] = messages
-  if (message['@type'] !== '/cosmos.bank.v1beta1.MsgSend') {
-    return false
-  }
-  if (message.from_address !== multisigAddress) {
     return false
   }
   return true
@@ -69,15 +61,22 @@ const ProposalCreate: NextPage = () => {
     // clone json string to avoid prototype poisoning
     // https://medium.com/intrinsic-blog/javascript-prototype-poisoning-vulnerabilities-in-the-wild-7bc15347c96
     const jsonClone = cloneDeep(jsonStr)
-    const json = JSON.parse(jsonClone)
+    let json: any
+    try{
+      json = JSON.parse(jsonClone)
+    } catch(e) {
+      setLoading(false)
+      setError('Error in JSON message.')
+      return
+    }
 
     if (!validateJsonSendMsg(json, multisigAddress)) {
       setLoading(false)
       setError('Error in JSON message.')
       return
     }
-    const msgs = [{ bank: { send: json?.body?.messages[0] } }]
-
+    const msgs = [json]
+    
     const msg = {
       title,
       description,
@@ -85,7 +84,7 @@ const ProposalCreate: NextPage = () => {
     }
 
     signingClient
-      ?.execute(walletAddress, multisigAddress, { propose: msg })
+      ?.execute(walletAddress, multisigAddress, { propose: msg }, defaultFee)
       .then((response) => {
         setLoading(false)
         setTransactionHash(response.transactionHash)

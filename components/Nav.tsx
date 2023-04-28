@@ -15,7 +15,6 @@ function Nav() {
   }
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
-  const PUBLIC_SITE_TITLE = process.env.NEXT_PUBLIC_SITE_TITLE
 
   return (
     <div className="border-b w-screen px-2 md:px-16">
@@ -26,9 +25,9 @@ function Nav() {
               {PUBLIC_SITE_ICON_URL.length > 0 ? (
                 <Image
                   src={PUBLIC_SITE_ICON_URL}
-                  height={32}
-                  width={32}
-                  alt={`${PUBLIC_SITE_TITLE} Logo`}
+                  height={48}
+                  width={400}
+                  alt={"Stargaze Logo"}
                 />
               ) : (
                 <span className="text-2xl">⚛️ </span>
@@ -37,7 +36,7 @@ function Nav() {
           </Link>
           <Link href="/">
             <a className="ml-1 md:ml-2 link link-hover font-semibold text-xl md:text-2xl align-top">
-              {PUBLIC_SITE_TITLE}
+              
             </a>
           </Link>
         </div>
