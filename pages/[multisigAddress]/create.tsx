@@ -23,7 +23,7 @@ function validateJsonSendMsg(json: any, multisigAddress: string) {
   if (typeof json !== 'object') {
     return false
   }
-  if (Array.isArray(json)) {
+  if (!Array.isArray(json)) {
     return false
   }
   return true
@@ -75,7 +75,7 @@ const ProposalCreate: NextPage = () => {
       setError('Error in JSON message.')
       return
     }
-    const msgs = [json]
+    const msgs = json
     
     const msg = {
       title,
@@ -124,12 +124,13 @@ const ProposalCreate: NextPage = () => {
               name="description"
               readOnly={complete}
             />
-            <label className="block mt-4">JSON</label>
+            <label className="block mt-4">JSON Message Array</label>
             <textarea
               className="input input-bordered rounded box-border p-3 w-full font-mono h-80 focus:input-primary text-x"
               cols={7}
               name="json"
               readOnly={complete}
+              placeholder='[{"bank":{"send":{"to_address":"stars153w5xhuqu3et29lgqk4dsynj6gjn96lr33wx4e","amount":[{"denom":"ustars","amount":"1000000"}]}}}]'
             />
             {!complete && (
               <button

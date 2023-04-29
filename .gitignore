@@ -27,6 +27,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# env
+.env.local
+
 # emacs
 .log
 *~
