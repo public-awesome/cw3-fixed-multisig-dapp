@@ -23,7 +23,7 @@ function validateJsonSendMsg(json: any, multisigAddress: string) {
   if (typeof json !== 'object') {
     return false
   }
-  if (Array.isArray(json)) {
+  if (!Array.isArray(json)) {
     return false
   }
   return true
@@ -75,7 +75,7 @@ const ProposalCreate: NextPage = () => {
       setError('Error in JSON message.')
       return
     }
-    const msgs = [json]
+    const msgs = json
     
     const msg = {
       title,
