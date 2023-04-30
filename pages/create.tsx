@@ -11,8 +11,7 @@ import { StdFee } from "@cosmjs/stargate";
 
 const defaultFee: StdFee = { amount: [{ amount: "10000", denom: "ustars" },], gas: "500000" };
 
-const MULTISIG_CODE_ID =
-  parseInt(process.env.NEXT_MULTISIG_CODE_ID as string) || 2081
+const MULTISIG_CODE_ID = parseInt(process.env.NEXT_PUBLIC_MULTISIG_CODE_ID as string)
 
 function AddressRow({ idx, readOnly }: { idx: number; readOnly: boolean }) {
   return (
