@@ -1,7 +1,7 @@
 ## Preview
 
 <p align="center" width="100%">
-    <img alt="cw3-fixed-multisig preview" src="https://i.imgur.com/92xnXyC.gif">
+    <img alt="cw3-fixed-multisig preview" src="https://arweave.net/VDl3V81NXfvDZ_ciYIyhwcMeUWN0vuBelNoIBd_e8_k/data.gif">
 </p>
 
 ## Summary
@@ -22,10 +22,10 @@ The proposal list UI provides icons indicating proposal status:
 
 ## Development
 
-This project was bootstrapped with [`next-cosmwasm-keplr-starter`](https://github.com/ebaker/next-cosmwasm-keplr-starter)
+This project is fork of [`cw3-fixed-multisig-dapp`](https://github.com/ebaker/cw3-fixed-multisig-dapp)
 
 ```bash
-git clone https://github.com/ebaker/cw3-fixed-multisig-dapp
+git clone https://github.com/public-awesome/cw3-fixed-multisig-dapp
 ```
 
 First, setup your `.env` file by copying the example:
